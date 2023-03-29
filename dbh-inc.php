@@ -1,5 +1,7 @@
 
 <?php    
+ob_start();
+
     $servername = "discountclinic.mysql.database.azure.com";
     $username = "adminLogin";
     $password = "1234567c!";
