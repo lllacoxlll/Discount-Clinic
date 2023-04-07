@@ -376,3 +376,25 @@ BEGIN
     (transaction_count, new.patient_id, new.appointment_id, 50, 0);
 END $$
 DELIMITER ;
+
+-- updates appointment.deleted to false when approval.approval_bool is updated to true
+DELIMITER $$
+CREATE TRIGGER `discount_clinic`.`update_deleted` AFTER UPDATE ON `discount_clinic`.`approval` FOR EACH ROW
+BEGIN
+	IF (NEW.approval_bool = 1)
+    THEN
+		UPDATE appointment
+        SET appointment.deleted=FALSE 
+        WHERE NEW.patient_id=appointment.patient_id 
+        AND NEW.specialist_doctor_id=appointment.doctor_id;
+END IF;
+END $$
+DELIMITER ;
+
+-- updates approval.approval_time to the current time the moment a doctor approves a specialist appointment
+DELIMITER $$
+CREATE TRIGGER `discount_clinic`.`current_time` BEFORE UPDATE ON `discount_clinic`.`approval` FOR EACH ROW
+BEGIN
+    SET NEW.approval_date = CURDATE();
+END $$
+DELIMITER ;
