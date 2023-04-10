@@ -1,4 +1,5 @@
 <?php 
+ob_start();
 session_start();
 
 	include("dbh-inc.php");
@@ -41,26 +42,6 @@ session_start();
 		padding: 20px;
 	}
 </style>
-
-<!--
-<script>
-function approveAppointment(approvalId) {
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == XMLHttpRequest.DONE) {
-      if (xhr.status == 200) {
-        // update the button or refresh the page
-      } else {
-        console.log('There was a problem with the request.');
-      }
-    }
-  }
-  xhr.open('POST', 'update_approval.php');
-  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('approval_id=' + approvalId);
-}
-</script>
--->
 
 <script>
 // Update the approval status and primary doctor ID
@@ -143,9 +124,8 @@ function approveAppointment(approval_id, doctor_id) {
 	if ($result->num_rows > 0) {
 		while ($row = $result->fetch_assoc()) {
 			$specific_patient = $row['patient_id'];
-			//echo $row['patient_id'];
-			echo $specific_patient;
-			echo " ";
+			//echo $specific_patient;
+			//echo " ";
 
 			$awaiting_approval = "SELECT appointment.*, office.*, doctor.first_name AS doctor_first_name, doctor.last_name AS doctor_last_name, patient.first_name AS patient_first_name, patient.last_name AS patient_last_name, approval.*, address.* 
 FROM discount_clinic.appointment, discount_clinic.office, discount_clinic.doctor, discount_clinic.patient, discount_clinic.approval, discount_clinic.address 
@@ -170,7 +150,6 @@ WHERE appointment.doctor_id=approval.specialist_doctor_id AND office.address_id=
 					echo "<td>" . $row['approval_id'] . "</td>";
 					$approval_status = $row['approval_bool'];
 					echo "<td>" . $approval_status . "</td>";
-					//echo "<td><button onclick=\"approveAppointment(" . $row['approval_id'] . ")\">Approve</button></td>"; // new column with approve button
 					echo "<td><button onclick=\"approveAppointment(" . $row['approval_id'] . ", " . $doctor_id . ")\">Approve</button></td>";
 					echo "</tr>";
 				}

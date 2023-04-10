@@ -1,6 +1,6 @@
 <?php 
+ob_start();
 session_start();
-//ob_start();
 
 	include("dbh-inc.php");
 	include("functions.php");
@@ -77,6 +77,7 @@ session_start();
       <th>Date</th>
       <th>Time</th>
       <th> Office Location</th>
+      <th>Status</th>
     </tr>
   </thead>
   <tbody>
@@ -102,7 +103,7 @@ session_start();
 		}
 		
 
-		$sql = "SELECT * FROM appointment WHERE patient_id = '$patient_id' AND deleted = FALSE";
+		// $sql = "SELECT * FROM appointment WHERE patient_id = '$patient_id' AND deleted = FALSE";
 
 
 		$sql = "SELECT * 
@@ -119,7 +120,21 @@ session_start();
 				echo "<td>" . $row['date'] . "</td>";
 				echo "<td>" . $row['time'] . "</td>";
 				echo "<td>" . $row['street_address'] . " " . $row['city'] . " " . $row['state'] . " " . $row['zip'] . "</td>";
-				echo "</tr>";
+                $status = $row['appointment.deleted'];
+                if($row['specialty'] <> 'primary'){
+                    if($status=1)
+                    {
+                        echo '<td>' . "awaiting approval" . '</td>';
+                    }
+                    else
+                    {
+                        echo '<td>' . "approved" . '</td>';
+                    }
+                    echo "</tr>";
+                }
+                else{
+                    echo '<td>' . "      " . '</td>';
+                }
 			}
 		} else {
 			echo "<tr><td colspan='5'>No appointments found.</td></tr>";
