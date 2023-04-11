@@ -123,7 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $res = mysqli_query($conn, $sql_specialist);
                         if ($res && mysqli_num_rows($res) > 0) 
                         {
-                          header("Location: doctors.php");
                           echo "You need approval from a GP.";
                         }
                         
@@ -136,7 +135,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             catch (Exception $e) {
               echo 'Caught exception: ',  $e->getMessage(), "\n";
-              header("Location: doctors.php");
             }
 
 
